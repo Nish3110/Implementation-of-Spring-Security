@@ -27,6 +27,11 @@ public class UserService implements UserDetailsService {
         return userRepo.findByEmail(username)
                 .orElseThrow(()-> new ResourceNotFoundException("user with email " + username +" not found!!"));
     }
+    public User getUserById(Long userId) {
+        return userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id "+ userId +
+                " not found"));
+    }
+
 
     public UserDTO signUp(SignUpDTO signUpDTO) {
         Optional<User> user = userRepo.findByEmail(signUpDTO.getEmail());
