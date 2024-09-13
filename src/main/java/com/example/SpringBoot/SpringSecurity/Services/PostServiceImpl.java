@@ -6,6 +6,8 @@ import com.example.SpringBoot.SpringSecurity.Repos.PostRepo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+
     public PostDTO createNewPost(PostDTO postDTO) {
 
         PostEntity toSavePost=mapper.map(postDTO, PostEntity.class);

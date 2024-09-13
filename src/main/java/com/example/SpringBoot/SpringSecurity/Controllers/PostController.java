@@ -3,6 +3,9 @@ package com.example.SpringBoot.SpringSecurity.Controllers;
 import com.example.SpringBoot.SpringSecurity.DTOs.PostDTO;
 import com.example.SpringBoot.SpringSecurity.Services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,19 +16,24 @@ import java.util.List;
 public class PostController {
 
     PostService postService;
+
     @GetMapping
-    public List<PostDTO>getAllPosts(){
+    @Secured("ROLE_USER")
+    public ResponseEntity<List<PostDTO>> getAllPosts(){
         List<PostDTO> postDTOS = (List<PostDTO>) postService.getAllPosts();
-        return postDTOS;
+        return ResponseEntity.ok(postDTOS);
     }
     @GetMapping(path = "/{postId}")
-    public PostDTO getPostById(@PathVariable Long postId){
-        return postService.getPostById(postId);
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long postId){
+         PostDTO postDTO = postService.getPostById(postId);
+         return ResponseEntity.ok(postDTO);
     }
 
     @PostMapping
-    public PostDTO createNewPost(@RequestBody PostDTO postDTO){
-        return postService.createNewPost(postDTO);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PostDTO> createNewPost(@RequestBody PostDTO postDTO){
+        PostDTO newpostDTO = postService.createNewPost(postDTO);
+        return ResponseEntity.ok(newpostDTO);
     }
 
 }
